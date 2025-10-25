@@ -1,0 +1,19 @@
+[project]
+name = 'Transparent-Philanthropy-Chain'
+description = 'Transparent, milestone-based donations on Stacks with IPFS proofs.'
+authors = ["Irobinda Chinonso"]
+telemetry = true
+cache_dir = '.\.cache'
+requirements = []
+[contracts.tpc]
+path = 'contracts/tpc.clar'
+clarity_version = 2
+epoch = 2.5
+[repl.analysis]
+passes = ['check_checker']
+
+[repl.analysis.check_checker]
+strict = false
+trusted_sender = false
+trusted_caller = false
+callee_filter = false
