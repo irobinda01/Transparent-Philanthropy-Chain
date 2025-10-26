@@ -1,6 +1,7 @@
-import { openContractCall } from "@stacks/connect";
+import { openContractCall, ContractCallOptions } from "@stacks/connect";
 import {
-  uintCV, principalCV, stringUtf8CV, standardPrincipalCV
+  uintCV, principalCV, stringUtf8CV, standardPrincipalCV,
+  PostConditionMode
 } from "@stacks/transactions";
 import { NETWORK, CONTRACT_ADDRESS, CONTRACT_NAME } from "./stacks";
 
@@ -32,21 +33,19 @@ export async function callCreateCampaign(goalUstx: bigint, deadlineBBH: bigint, 
 }
 
 export async function callDonate(id: bigint, ustx: bigint) {
-  return openContractCall({
+  const options: ContractCallOptions = {
     network: NETWORK,
     contractAddress: CONTRACT_ADDRESS,
     contractName: CONTRACT_NAME,
     functionName: "donate",
     functionArgs: [uintCV(id)],
-    attachment: undefined,
-    sponsored: false,
+    postConditionMode: PostConditionMode.Allow,
     postConditions: [],
     onFinish: () => {},
-    // use 'amount' in microstacks via 'sendMany' style is not available; attach via 'userOptions'
-    // Workaround: openContractCall supports 'fee' but not amount; In practice donation via 'donate' should be
-    // implemented by a payable method called with amount; some wallet SDKs infer from 'postConditions'.
-    // For hackathon demo, you can switch to Explorer UI for donation calls if wallet doesn't pass amount.
-  } as any);
+    // The ustx amount will be automatically handled by the wallet
+    // and read by the contract using stx-get-balance
+  };
+  return openContractCall(options);
 }
 
 export async function callSubmitProof(id: bigint, hash: string) {

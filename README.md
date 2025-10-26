@@ -52,7 +52,67 @@ clarinet test
    npm run dev
    ```
 
-## 📦 Technology Stack
+## � Deployment Guide
+
+### 1. Contract Deployment to Testnet
+
+1. Install Clarinet if not already installed:
+   ```bash
+   choco install clarinet    # Windows with Chocolatey
+   # OR download from https://www.hiro.so/clarinet
+   ```
+
+2. Set up your Testnet wallet:
+   - Create a new wallet on Hiro Wallet (https://wallet.hiro.so)
+   - Switch to Testnet network
+   - Get test STX from faucet: https://explorer.hiro.so/sandbox/faucet?chain=testnet
+
+3. Configure deployment settings:
+   - Edit `settings/Testnet.toml`
+   - Replace `<YOUR PRIVATE TESTNET MNEMONIC HERE>` with your wallet's seed phrase
+   - Ensure you have enough testnet STX for deployment
+
+4. Deploy the contract:
+   ```bash
+   clarinet deploy --testnet
+   ```
+   - Save the contract address and ID from deployment output
+
+### 2. Frontend Configuration
+
+1. Create frontend environment file:
+   ```bash
+   cd frontend
+   cp .env.example .env
+   ```
+
+2. Update `.env` with deployment details:
+   ```
+   VITE_CONTRACT_ADDRESS=<your_deployed_contract_address>
+   VITE_CONTRACT_NAME=tpc
+   ```
+
+3. Install dependencies and start:
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+### 3. Testing the Deployment
+
+1. Connect Hiro Wallet to your DApp
+2. Try registering a test charity
+3. Create a test campaign
+4. Make a test donation
+
+### 4. Important Contract Details
+
+- **Network**: Stacks Testnet
+- **Contract Address**: Your deployed contract address
+- **Contract Name**: tpc
+- **Explorer**: https://explorer.hiro.so/txid/<TRANSACTION_ID>?chain=testnet
+
+## �📦 Technology Stack
 
 ```json
 {

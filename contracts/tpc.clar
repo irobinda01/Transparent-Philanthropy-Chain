@@ -97,15 +97,11 @@
 
 ;; --- DONATIONS ---
 
-(define-public (donate (id uint) (amt uint))
-  ;; NOTE: some test/runtimes may not expose a builtin to read attached STX.
-  ;; To avoid depending on environment-specific builtins, this function
-  ;; accepts the donation amount as an explicit parameter. Callers/tests
-  ;; should ensure the same amount is transferred to the contract when
-  ;; invoking this function.
+(define-public (donate (id uint))
   (let
     (
       (c (map-get? campaigns { id: id }))
+      (amount (stx-get-balance tx-sender))
     )
     (asserts! (is-some c) ERR-CAMPAIGN-NOT-FOUND)
     (let
@@ -113,17 +109,20 @@
         (cv (unwrap! c ERR-CAMPAIGN-NOT-FOUND))
       )
       (asserts! (is-eq (get status cv) STATUS-ACTIVE) ERR-NOT-ACTIVE)
-      (asserts! (> amt u0) ERR-INVALID)
-      ;; escrow stays in contract balance; we only track accounting
-      (let
-        (
-          (prev (map-get? donations { id: id, donor: tx-sender }))
-          (new-amt (+ (if (is-some prev) (get amount (unwrap! prev (err u999))) u0) amt))
-        )
-        (map-set donations { id: id, donor: tx-sender } { amount: new-amt, refunded: false })
-        (map-set campaigns { id: id }
-          (merge cv { raised: (+ (get raised cv) amt) }))
-        (ok new-amt)))))
+      (asserts! (> amount u0) ERR-INVALID)
+      ;; transfer STX to contract for escrow
+      (match (stx-transfer? amount tx-sender (as-contract tx-sender))
+        success
+          (let
+            (
+              (prev (map-get? donations { id: id, donor: tx-sender }))
+              (new-amt (+ (if (is-some prev) (get amount (unwrap! prev (err u999))) u0) amount))
+            )
+            (map-set donations { id: id, donor: tx-sender } { amount: new-amt, refunded: false })
+            (map-set campaigns { id: id }
+              (merge cv { raised: (+ (get raised cv) amount) }))
+            (ok new-amt))
+        error ERR-INVALID))))
 
 ;; --- PROOF & RELEASE ---
 
