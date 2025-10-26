@@ -3,7 +3,7 @@ import {
   uintCV, principalCV, stringUtf8CV, standardPrincipalCV,
   PostConditionMode
 } from "@stacks/transactions";
-import { NETWORK, CONTRACT_ADDRESS, CONTRACT_NAME } from "./stacks";
+import { NETWORK, CONTRACT_ADDRESS, CONTRACT_NAME } from "./lib/stacks";
 
 export async function callRegisterCharity(name: string, info: string) {
   return openContractCall({

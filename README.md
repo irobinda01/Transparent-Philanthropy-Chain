@@ -1,26 +1,43 @@
 # 🌍 Transparent Philanthropy Chain (TPC)
 
-> Empowering charitable giving with blockchain transparency and accountability.
+> Building trust in charitable giving through blockchain transparency and smart verification
 
-TPC is a decentralized philanthropy platform built with **Clarity** smart contracts on the **Stacks** blockchain. It enables verifiable charitable giving where **STX tokens** are held in escrow until impact verification. This creates a trustless system where donors' funds are protected and charities are accountable for their promised deliverables.
+TPC revolutionizes charitable donations by combining the security of **Stacks blockchain** with a user-friendly interface for transparent giving. Our platform ensures that every donation is traceable, verifiable, and reaches its intended beneficiaries through a robust escrow and verification system.
 
-## ✨ Core Features
-- **Smart Contract Security**: Funds are securely escrowed in Clarity contracts
-- **Verified Charities**: On-chain registration system for legitimate organizations
-- **Campaign Management**: Fundraising campaigns with specific goals and deadlines
-- **Impact Verification**: Two-step verification process with proof submission and verification
-- **Donor Protection**: Automatic refund system if campaign goals aren't met
-- **Transparent Tracking**: Real-time campaign progress monitoring
-- **Decentralized Verification**: Independent verifiers ensure accountability
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Stacks](https://img.shields.io/badge/Stacks-Blockchain-purple)](https://www.stacks.co/)
+[![Clarity](https://img.shields.io/badge/Smart%20Contracts-Clarity-blue)](https://clarity-lang.org/)
 
-## 🧱 Smart Contract Architecture (`contracts/tpc.clar`)
-Key public functions:
-- `register-charity(name, info)`: Register new charitable organizations
-- `create-campaign(goal, deadline, description, verifier)`: Launch fundraising campaigns
-- `donate(id)`: Make STX donations to campaigns
-- `submit-proof(id, hash)`: Submit proof of impact via IPFS hash
-- `verify-and-release(id)`: Verifier approves and releases funds
-- `refund(id)`: Return funds if deadline passes without verification
+## 🎯 Why TPC?
+
+In traditional charitable giving, donors often lack visibility into how their funds are used. TPC solves this by:
+
+- **🔒 Secure Escrow**: All donations are held in smart contracts until verified
+- **✅ Verifiable Impact**: Third-party verification of charitable outcomes
+- **💰 Donor Protection**: Automatic refunds if projects don't meet goals
+- **📊 Real-time Tracking**: Monitor campaign progress and fund usage
+- **🤝 Trust Building**: Transparent, immutable record of all transactions
+
+## 🛠️ Technical Architecture
+
+### Smart Contracts (`contracts/tpc.clar`)
+
+```clarity
+;; Key Functions
+(define-public (register-charity (name (string-ascii 64)) (info (string-ascii 256)))
+(define-public (create-campaign (goal uint) (deadline uint) (description (string-utf8 256)) (verifier principal))
+(define-public (donate (id uint))
+(define-public (submit-proof (id uint) (hash (string-utf8 256)))
+(define-public (verify-and-release (id uint))
+(define-public (refund (id uint))
+```
+
+### Frontend Stack
+
+- **🎨 UI**: React 18 with Tailwind CSS
+- **🔗 Blockchain**: Stacks.js for chain interaction
+- **🏗️ Build**: Vite for blazing-fast development
+- **📱 Design**: Responsive, mobile-first approach
 
 ## 🔬 Run Tests
 ```bash
